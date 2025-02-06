@@ -15,41 +15,42 @@ const SignInPage = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [login] = useLoginMutation()
+  
+  // Uncomment this section
+  const { userInfo } = useSelector((state) => state.auth);
 
-  const [ login ] = useLoginMutation()
-
-  // const { userInfo } = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     navigate('/upload-document');
-  //   }
-  // }, [navigate, userInfo]);
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/upload-document');
+    }
+  }, [navigate, userInfo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
-
-    console.log('Signed in with:', email, password);
-    
+  
     try {
-        const res = await login({ email, password }).unwrap()
-        dispatch(setCredentials({ ...res }))
-        navigate('/upload-document')
-        console.log(res)
-      } catch (err) {
-        // toast.error(err)
+      const res = await login({ email, password }).unwrap()
+      await dispatch(setCredentials({ ...res })) // Add await here
+      // Try multiple navigation approaches
+      navigate('/upload-document', { replace: true })
+      if (window.location.pathname !== '/upload-document') {
+        window.location.href = '/upload-document'
       }
-    // Reset form after successful sign-in
+      console.log(res)
+    } catch (err) {
+      setError('Login failed: ' + (err.data?.message || err.message))
+    };
+    // Move this inside the try block after successful login
     setEmail('');
     setPassword('');
     setError('');
   };
-
   return (
     <Container>
       <FormWrapper>
