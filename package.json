@@ -16,12 +16,12 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.28.2",
     "react-scripts": "5.0.1",
-    "serve": "^14.0.0",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+      "serve": "^14.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm install && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
